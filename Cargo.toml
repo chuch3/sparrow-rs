@@ -1,0 +1,12 @@
+[workspace]
+resolver = "3"
+members = [
+    "libs/*"
+]
+
+[package]
+name = "sparrow"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]

@@ -1,0 +1,39 @@
+body {
+	background: #17171a;
+}
+
+#title {
+	color: #fff;
+	margin-left: 50px;
+	margin-top: 50px;
+}
+
+#subhead {
+	color: #fff;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+#train {
+	position: absolute;
+	top: 120px;
+	margin: 50px;
+	background: #1d1c21;
+	color: #fff;
+	height: 50px;
+	width: 300px;
+    font-size: 18px;
+}
+
+#output {
+	margin-left: 2.5%;
+	margin-bottom: 10%;
+	background: #1d1c21;
+	color: #fff;
+}
+
+#viewport {
+	margin: 5%;
+    margin-left: 10%;
+	margin-bottom: 10px;
+}
