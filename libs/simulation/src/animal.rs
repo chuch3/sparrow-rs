@@ -11,8 +11,8 @@ pub struct Animal {
 }
 
 impl Animal {
-    pub fn random(rng: &mut dyn RngCore) -> Self {
-        let eye = Eye::default();
+    pub fn random(rng: &mut dyn RngCore, settings: Config) -> Self {
+        let eye = Eye::config_new(settings);
         let brain = Brain::random(rng, &eye);
         Self::new(rng, eye, brain)
     }
@@ -33,8 +33,12 @@ impl Animal {
         self.brain.as_chromosome()
     }
 
-    pub(crate) fn from_chromosome(rng: &mut dyn RngCore, chromosome: ga::Chromosome) -> Self {
-        let eye = Eye::default();
+    pub(crate) fn from_chromosome(
+        rng: &mut dyn RngCore,
+        settings: Config,
+        chromosome: ga::Chromosome,
+    ) -> Self {
+        let eye = Eye::config_new(settings);
         let brain = Brain::from_chromosome(chromosome, &eye);
         Self::new(rng, eye, brain)
     }

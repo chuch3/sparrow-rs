@@ -1,9 +1,9 @@
 import * as sim from "lib-simulation-wasm";
+import config from "./config.toml";
 
 // ctxt parameter has to implement the drawTriangle() function beforehand.
-
 function main() {
-    const simulation = new sim.SimulationWasm();
+    const simulation = new sim.SimulationWasm(config);
 
     document.getElementById("train").onclick = function() {
         var output = document.getElementById("output");

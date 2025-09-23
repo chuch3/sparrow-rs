@@ -190,49 +190,11 @@ way larger memory, borrowing is cheaper than cloning / deep clones.
 
 ### TODO
 
-- [ ] Every const variables be wrapped in configuration
-- [ ] Make configuration read from .toml files
-- [ ] How about .env files?
+- [x] Make configuration read from TOML files
+- [ ] Document this difference in configuration
 
-- Objects doesn't need to store its configuration, instead of making 
-duplicated values and fields. Just check the config file or .toml for 
-easier use
-
-- object contains the parameters itself, we just pass the config to default
-    - if the objects require the configuration in multiple methods,
-    we have it as a field instead of initializing `let config = ...` for
-    every method. else just pass config to default
-    - if not used on other methods, just init once.
-    - configuration for methods, configuration for fields
-
-    - Config has toml values of each objects deserealize on that specific
-    section
-
-    - AAAAAAAAAAAA simulation -> world::random -> animal::random
-                                -> eye::random
-    - Configuration mimics the object's inheritance
     - [ ] Inheritance OOP
 
-    - Avoiding tight coupling in the configuration. (SOC)
-
-    - Pass parameters of the entire config, but there is 
-    separation of concern where each object can access other 
-    configurations
-
-    ```rust
-    pub fn new(config: &Config) -> Self {
-        let animal_config = config.animal;
-        Self { animal_config, ... }
-    }
-    ```
-
-    - Singleton design pattern, htm
-
-
-
-
-
-    - [ ] Document this difference in configuration
     - [ ] adjustable config
 
 - [ ] Error handling, cargo packages docs
@@ -240,20 +202,11 @@ easier use
 - Pass config struct by parameters into its constructor
 - Build in another file
 
-* Dont pass by parameters, horrible scalability
-* Each objects has its fields they can access to 
-    - If one-level higher configuration, animal has to access the world from bottom up.
-    - More unified where one config for all animals
-
-    - Same-level configuration, each animals has its own config.
-    - allows specific configuration, but has higher memory consumption
 
 ### QnA
 
 
 ### Painful TODOs to suffer/cry to 
-
-- [ ] Configuration struct that can be applied during runtime in the html 
 
 - [ ] Revise especially Rust idioms and testing.
 - [ ] Get rid of hardcoded values

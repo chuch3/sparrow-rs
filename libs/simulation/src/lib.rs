@@ -19,13 +19,13 @@ pub struct Simulation {
     world: World,
     ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
     age: usize,
-    config: SimulationConfig,
+    config : SimulationConfig,
 }
 
 impl Simulation {
-    pub fn random(rng: &mut dyn RngCore) -> Self {
-        let world = World::random(rng);
-        let config = SimulationConfig::default();
+    pub fn random(rng: &mut dyn RngCore, settings: Config) -> Self {
+        let config = settings.simulation;
+        let world = World::random(rng, settings);
         let ga = ga::GeneticAlgorithm::new(
             ga::RouletteWheelSelection,
             ga::UniformCrossover,
@@ -44,27 +44,27 @@ impl Simulation {
         &self.world
     }
 
-    pub fn step(&mut self, rng: &mut dyn RngCore) -> Option<ga::Statistics> {
+    pub fn step(&mut self, rng: &mut dyn RngCore, settings: Config) -> Option<ga::Statistics> {
         self.calc_movement();
         self.calc_brain();
         self.calc_collision(rng);
         self.age += 1;
         if self.age > self.config.max_generation {
-            Some(self.evolve(rng))
+            Some(self.evolve(rng, settings))
         } else {
             None
         }
     }
 
-    pub fn fast_forward(&mut self, rng: &mut dyn RngCore) -> ga::Statistics {
+    pub fn fast_forward(&mut self, rng: &mut dyn RngCore, settings: Config) -> ga::Statistics {
         loop {
-            if let Some(summary) = self.step(rng) {
+            if let Some(summary) = self.step(rng, settings) {
                 return summary;
             }
         }
     }
 
-    fn evolve(&mut self, rng: &mut dyn RngCore) -> ga::Statistics {
+    fn evolve(&mut self, rng: &mut dyn RngCore, settings: Config) -> ga::Statistics {
         self.age = 0;
 
         // Gather the current population.
@@ -81,7 +81,7 @@ impl Simulation {
         // Create our evolved population into the ecosystem.
         self.world.animals = new_population
             .into_iter()
-            .map(|individual| individual.into_animal(rng))
+            .map(|individual| individual.into_animal(rng, settings))
             .collect();
 
         // Randomizing food after each evolution to be easily recognizable.

@@ -13,6 +13,10 @@ pub struct Eye {
 }
 
 impl Eye {
+    pub fn config_new(settings: Config) -> Self {
+        let config = settings.eye;
+        Self::new(&config.fov_range, &config.fov_angle, &config.cells)
+    }
     pub fn new(fov_range: &f32, fov_angle: &f32, cells: &usize) -> Self {
         assert!(*fov_range > 0.0);
         assert!(*fov_angle > 0.0);

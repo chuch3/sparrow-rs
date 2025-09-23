@@ -1,3 +1,4 @@
+const { type } = require("os");
 const path = require("path");
 
 module.exports = {
@@ -10,6 +11,14 @@ module.exports = {
     target: "web",
     experiments: {
         asyncWebAssembly: true,
+    },
+    module: {
+        rules: [
+            {
+                test: /\.toml$/i,
+                type: "asset/source",
+            },
+        ],
     },
     devServer: {
         static: "./dist",

@@ -25,7 +25,8 @@ const CELLS: usize = 10;
 
 const INITIAL_SPEED: f32 = 0.002;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(default)]
 pub struct SimulationConfig {
     pub speed_max: f32,
     pub speed_min: f32,
@@ -34,38 +35,45 @@ pub struct SimulationConfig {
     pub mutation_chance: f32,
     pub mutation_weight: f32,
     pub max_generation: usize,
-    pub world: WorldConfig,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(default)]
 pub struct WorldConfig {
     pub num_animals: usize,
     pub num_foods: usize,
-    pub animal: AnimalConfig,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(default)]
 pub struct AnimalConfig {
     pub speed: f32,
-    pub eye: EyeConfig,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(default)]
 pub struct EyeConfig {
     pub fov_range: f32,
     pub fov_angle: f32,
     pub cells: usize,
 }
 
-
-#[derive(Debug, Deserialize)]
-pub struct Config {}
+#[derive(Debug, Deserialize, Clone, Copy)]
+pub struct Config {
+    #[serde(default)]
+    pub simulation: SimulationConfig,
+    #[serde(default)]
+    pub eye: EyeConfig,
+    #[serde(default)]
+    pub world: WorldConfig,
+    #[serde(default)]
+    pub animal: AnimalConfig,
+}
 
 impl Config {
-    pub fn read_file() -> Config {
-        let file = fs::read_to_string(CONFIG_FILE).expect("unable to read config.toml file");
+    pub fn parse_config (config_contents: &str) -> Self {
         let config: Config =
-            toml::from_str(&file).expect(format!("unable to parse {CONFIG_FILE}").as_str());
+            toml::from_str(config_contents).expect(format!("unable to parse {CONFIG_FILE}").as_str());
         config
     }
 }
@@ -74,7 +82,6 @@ impl Default for AnimalConfig {
     fn default() -> Self {
         Self {
             speed: INITIAL_SPEED,
-            eye: EyeConfig::default(),
         }
     }
 }
@@ -92,9 +99,8 @@ impl Default for EyeConfig {
 impl Default for WorldConfig {
     fn default() -> Self {
         Self {
-            animal: AnimalConfig::default(),
-            num_foods: NUM_FOODS,
             num_animals: NUM_ANIMALS,
+            num_foods: NUM_FOODS,
         }
     }
 }
@@ -102,14 +108,13 @@ impl Default for WorldConfig {
 impl Default for SimulationConfig {
     fn default() -> Self {
         Self {
-            speed_max: SPEED_MAX,
             speed_min: SPEED_MIN,
+            speed_max: SPEED_MAX,
             speed_accel: SPEED_ACCEL,
             rotation_accel: ROTATION_ACCEL,
             mutation_chance: MUTATION_CHANCE,
             mutation_weight: MUTATION_WEIGHT,
             max_generation: MAX_GENERATION,
-            world: WorldConfig::default(),
         }
     }
 }
@@ -119,7 +124,8 @@ mod test {
     use super::*;
 
     #[test]
-    fn output_file_name() {
-        Config::read_file();
+    fn test_default_toml() {
+
     }
+
 }

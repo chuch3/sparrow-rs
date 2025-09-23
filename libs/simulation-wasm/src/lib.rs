@@ -2,7 +2,7 @@
 * Proxy design pattern module used to interface with Rust workspace
 */
 
-use lib_simulation as sim;
+use lib_simulation::{self as sim, Config};
 use rand::prelude::*;
 use wasm_bindgen::prelude::*;
 
@@ -10,16 +10,18 @@ use wasm_bindgen::prelude::*;
 pub struct SimulationWasm {
     rng: ThreadRng,
     sim: sim::Simulation,
+    settings: Config,
 }
 
 #[wasm_bindgen]
 impl SimulationWasm {
     #[wasm_bindgen(constructor)]
-    pub fn new() -> Self {
+    pub fn new(config_contents: &str) -> Self {
         let mut rng = thread_rng();
-        let sim = sim::Simulation::random(&mut rng);
+        let settings = Config::parse_config(config_contents);
+        let sim = sim::Simulation::random(&mut rng, settings);
 
-        Self { rng, sim }
+        Self { rng, sim, settings }
     }
 
     pub fn world(&self) -> WorldWasm {
@@ -27,11 +29,11 @@ impl SimulationWasm {
     }
 
     pub fn step(&mut self) {
-        self.sim.step(&mut self.rng);
+        self.sim.step(&mut self.rng, self.settings);
     }
 
     pub fn fast_forward(&mut self) -> String {
-        let stats = self.sim.fast_forward(&mut self.rng);
+        let stats = self.sim.fast_forward(&mut self.rng, self.settings);
         format!(
             "Fitness : min {:.4}, max {:.4}, average {:4}",
             stats.min_fitness, stats.max_fitness, stats.avg_fitness
