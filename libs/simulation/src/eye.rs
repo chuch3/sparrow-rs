@@ -1,9 +1,6 @@
 use crate::*;
 
-use std::{
-    f32::consts::PI,
-    usize,
-};
+use std::{f32::consts::PI, usize};
 
 #[derive(Debug)]
 pub struct Eye {

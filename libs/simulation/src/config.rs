@@ -1,7 +1,6 @@
 use crate::*;
 use serde::Deserialize;
 use std::f32::consts::PI;
-use std::fs;
 use toml;
 
 // Must only be used for initialization and customization.
@@ -71,9 +70,9 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn parse_config (config_contents: &str) -> Self {
-        let config: Config =
-            toml::from_str(config_contents).expect(format!("unable to parse {CONFIG_FILE}").as_str());
+    pub fn parse_config(config_contents: &str) -> Self {
+        let config: Config = toml::from_str(config_contents)
+            .expect(format!("unable to parse {CONFIG_FILE}").as_str());
         config
     }
 }
@@ -121,11 +120,7 @@ impl Default for SimulationConfig {
 
 #[cfg(test)]
 mod test {
-    use super::*;
 
     #[test]
-    fn test_default_toml() {
-
-    }
-
+    fn test_default_toml() {}
 }

@@ -187,98 +187,23 @@ way larger memory, borrowing is cheaper than cloning / deep clones.
 
 ----------
 
-
 ### TODO
 
-- [x] Make configuration read from TOML files
-- [ ] Document this difference in configuration
+- [ ] Visual the (sensors) eyes and brains for the boids
+- [ ] Configuration
+    - [ ] Error handling, cargo packages docs
+    - [ ] Traits for additional files to parse
 
-    - [ ] Inheritance OOP
-
-    - [ ] adjustable config
-
-- [ ] Error handling, cargo packages docs
-
-- Pass config struct by parameters into its constructor
-- Build in another file
-
-
-### QnA
-
-
-### Painful TODOs to suffer/cry to 
-
-- [ ] Revise especially Rust idioms and testing.
-- [ ] Get rid of hardcoded values
-
-- [ ] Refactor technical debts
+- [ ] Better repo documentation and description
+- [ ] Refactor 
+- [ ] `--release` build for optimizations
+- [ ] Output every evolution instead of fast-forward.
+    - Statistics in step / evolve
 
 #### Future
 
-- [ ] Poisson disk sampling for non-overlapping positions [link](https://en.wikipedia.org/wiki/Supersampling)
 - [ ] Implement other senses like ears, nerves, mood, etc.
-- [ ] `--release` build for optimizations
-- [ ] Implement Entity Component System design pattern
-- [ ] Output every evolution instead of fast-forward.
-- [ ] Visual the eyes for the boids
+- [ ] Entity Component System design pattern
 - [ ] Color mutation with chromosome and weights
-- [ ] Cannibalism having lower or higher effect on the fitness (predator/prey)
-- [ ] Hyperparameterization
+- [ ] Cannibalism having lower or higher effect on the fitness
 - [ ] Rayon data pararellization
-- [ ] Prototype inheritance in JS
-
-- [ ] Typescript over javascript
-
-
-- [ ] [circle-triangle intersection](https://www.phatcode.net/articles.php?id=459)
-
-- [ ] [CSS Styling basics](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics)
-
-- [ ] Learn simple JS [dynamic](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting)
-
-#### Future 
-
-
-#### To learn 
-
-- [ ] Design patterns 
-- [ ] Macro rules, procedural macro
-- [ ] Nix build system
-- [ ] ts 
-    - [ts handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-    - [ts intro](https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html)
-- [ ] html, css, js and json
-    - [basic html from w3](https://www.w3schools.com/Html/)
-    - [odin](https://www.theodinproject.com/)
-    - [css tricks](https://css-tricks.com/)
-    - [mdn](https://developer.mozilla.org/en-US/docs/Learn_web_development)
-    - [js1](https://javascript.info/)
-    - fyi, get good on flex and gridbox html css
-
-- In test cases, check for number of parameters and solid types.
-- If there are many inputs, we can use parameterized test cases
-- Instead of using numerical differences, we can map into graphical representation.
-- We can use a wrapper to hold all our parameters, instead of passing as arguments.
-- Empty assertion then pass solution if it makes sense.
-
-- Using Debug trait for output
-- Using rust design patterns, itertools like .zip, .map, .fold
-- Bindings, idiomatic programming
-- Crude approach, asserts, rustify & iterators
-- Testing undeterministic functions which lacks referential transparency
-    - Using `dyn` for dynamically dispatch properties in objects. (runtime polymorphism)
-        - Non-deterministic strings like stdout to assert upon
-        - Creating predictable PRNGs
-- Macro rules
-- Test names on preconditions and expectations, structuring on edge cases
-
-- Instead of using mock objects, manually build the testing objects with required traits and constructors.
-- Consider properties of owned/borrowed, constructors, traits, parameters, dispatch in adding functionality.
-- Encapsulation by implementing indexing, len, iterators.
-- Using Box<dyn Trait> to add generic parameters upon generic parameters with dynamic dispatch
-- Using edge cases in building tests
-- Placeholder structs and marker structs
-- Conversion based on shared traits
-- Type inference of generic collection `.into_iter().collect()`
-
-- Break the code more, add more features and revise

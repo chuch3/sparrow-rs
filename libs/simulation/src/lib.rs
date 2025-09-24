@@ -19,7 +19,7 @@ pub struct Simulation {
     world: World,
     ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
     age: usize,
-    config : SimulationConfig,
+    config: SimulationConfig,
 }
 
 impl Simulation {
@@ -135,6 +135,8 @@ impl Simulation {
         }
 
         /*
+        * - TODO: Pseudocode for cannibalism
+        *
         for predator in &mut self.world.animals {
             for prey in &mut self.world.animals {
                 let distance = na::distance(&predator.position, &prey.position);
@@ -145,6 +147,6 @@ impl Simulation {
                 }
             }
         }
-            */
+        */
     }
 }

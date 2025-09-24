@@ -12,11 +12,10 @@ impl AnimalIndividual {
             chromosome: animal.brain.as_chromosome(),
         }
     }
-    
+
     pub fn into_animal(self, rng: &mut dyn RngCore, settings: Config) -> Animal {
         Animal::from_chromosome(rng, settings, self.chromosome)
     }
-
 }
 
 impl ga::Individual for AnimalIndividual {
