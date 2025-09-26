@@ -22,7 +22,7 @@ const FOV_RANGE: f32 = 0.5;
 const FOV_ANGLE: f32 = PI * FRAC_PI_4;
 const CELLS: usize = 10;
 
-const INITIAL_SPEED: f32 = 0.002;
+const SPEED: f32 = 0.002;
 
 #[derive(Debug, Deserialize, Clone, Copy)]
 #[serde(default)]
@@ -80,7 +80,7 @@ impl Config {
 impl Default for AnimalConfig {
     fn default() -> Self {
         Self {
-            speed: INITIAL_SPEED,
+            speed: SPEED,
         }
     }
 }

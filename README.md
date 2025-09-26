@@ -1,5 +1,7 @@
 # sparrow
 
+## Respository is STILL IN PROGRESS for public use (i hope)
+
 ### Description 
 
 Evolution environment with genetic algorithms written in Rust

@@ -27,12 +27,12 @@ body {
 
 #output {
 	margin-left: 2.5%;
-	margin-bottom: 10%;
+	margin-bottom: 15%;
 	background: #1d1c21;
 	color: #fff;
 }
 
 #viewport {
 	margin: 5%;
-	margin-bottom: 10px;
+    margin-top: 3%;
 }
