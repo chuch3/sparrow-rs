@@ -4,13 +4,16 @@ use std::f32::consts::FRAC_PI_4;
 
 mod animal;
 mod animal_individual;
+mod boid;
 mod brain;
 mod config;
 mod eye;
 mod food;
 mod world;
 
-pub use self::{animal::*, animal_individual::*, brain::*, config::*, eye::*, food::*, world::*};
+pub use self::{
+    animal::*, animal_individual::*, boid::*, brain::*, config::*, eye::*, food::*, world::*,
+};
 
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;

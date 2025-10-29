@@ -79,9 +79,7 @@ impl Config {
 
 impl Default for AnimalConfig {
     fn default() -> Self {
-        Self {
-            speed: SPEED,
-        }
+        Self { speed: SPEED }
     }
 }
 

@@ -2,10 +2,11 @@
 max_generation = 3000
 
 [world]
-num_foods = 5
+num_foods = 2
 
 [eye]
 fov_range = 100
+
 
 
 
