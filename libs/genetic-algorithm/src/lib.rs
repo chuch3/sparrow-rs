@@ -11,9 +11,8 @@
 //!
 //! Code examples can be viewed in the test module supplied in the source code.
 //!
-//! Tutorial code by [link](https://pwy.io/posts/learning-to-fly-pt1)
+//! Rerefence code by [link](https://pwy.io/posts/learning-to-fly-pt1)
 //!
-
 
 use rand::{Rng, RngCore, seq::SliceRandom};
 use std::ops::Index;
@@ -66,7 +65,7 @@ impl Chromosome {
 
 /// Individual describes types that exists in the population.
 pub trait Individual {
-    // Rather use `create` to avoid confusion with struct's constructor naming convention, `new`.
+    // Rather use `create` to avoid confusion with struct's constructor naming convention, `new`
     fn create(chromosome: Chromosome) -> Self;
     fn fitness(&self) -> f32;
     fn chromosome(&self) -> &Chromosome;

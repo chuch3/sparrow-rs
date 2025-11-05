@@ -24,7 +24,6 @@ function main() {
 
     const ctxt = viewport.getContext("2d");
 
-
     CanvasRenderingContext2D.prototype.drawTriangle = function(
         x,
         y,

@@ -3,11 +3,9 @@ use serde::Deserialize;
 use std::f32::consts::PI;
 use toml;
 
-// Must only be used for initialization and customization.
-
 const CONFIG_FILE: &str = "config.toml";
 
-const SPEED_MAX: f32 = 0.0025;
+const SPEED_MAX: f32 = 0.003;
 const SPEED_MIN: f32 = 0.0001;
 const SPEED_ACCEL: f32 = 0.05;
 const ROTATION_ACCEL: f32 = FRAC_PI_4;
@@ -118,7 +116,6 @@ impl Default for SimulationConfig {
 
 #[cfg(test)]
 mod test {
-
     #[test]
     fn test_default_toml() {}
 }

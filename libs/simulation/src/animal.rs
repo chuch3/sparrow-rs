@@ -10,6 +10,13 @@ pub struct Animal {
     pub(crate) hunger: usize,
 }
 
+impl PartialEq for Animal {
+    // All animal positions are unique and allows no collision.
+    fn eq(&self, other: &Self) -> bool {
+        self.position == other.position
+    }
+}
+
 impl Animal {
     pub fn random(rng: &mut dyn RngCore, settings: Config) -> Self {
         let eye = Eye::config_new(settings);

@@ -4,16 +4,13 @@ use std::f32::consts::FRAC_PI_4;
 
 mod animal;
 mod animal_individual;
-mod boid;
 mod brain;
 mod config;
 mod eye;
 mod food;
 mod world;
 
-pub use self::{
-    animal::*, animal_individual::*, boid::*, brain::*, config::*, eye::*, food::*, world::*,
-};
+pub use self::{animal::*, animal_individual::*, brain::*, config::*, eye::*, food::*, world::*};
 
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
@@ -117,14 +114,37 @@ impl Simulation {
     }
 
     fn calc_movement(&mut self) {
-        for animal in &mut self.world.animals {
+        let mut updates: Vec<na::Vector2<f32>> = Vec::new();
+        let coherence_weight = 0.5;
+        let separation_weight = 0.55;
+
+        // Computing boidal movement
+        for animal in &self.world.animals {
+            let coherence = self.world.calc_coherence(&animal);
+            let separation = self.world.calc_separation(&animal);
+
+            // We dont' want the animal to teleport to the flock center, etc.
+            // So we convert it to a direction vector for the animal to go towards it.
+            //let coherence_direction: na::Vector2<f32> = coherence - animal.position();
+            //let separation_direction: na::Vector2<f32> = separation - animal.position();
+
+            let delta = coherence.coords * coherence_weight + separation.coords * separation_weight;
+            updates.push(delta)
+        }
+
+        for (animal, delta) in self.world.animals.iter_mut().zip(updates) {
             // Scales speed relative with y-axis as the boids points upward
             // during no rotation.
-            animal.position += animal.rotation * na::Vector2::new(0.0, animal.speed);
+            let mut velocity = delta + (animal.rotation * na::Vector2::new(0.0, animal.speed));
+            if velocity.magnitude() > animal.speed() {
+                velocity = velocity.normalize() * animal.speed();
+            }
+            animal.position += velocity;
             animal.position.x = na::wrap(animal.position.x, 0.0, 1.0);
             animal.position.y = na::wrap(animal.position.y, 0.0, 1.0);
         }
     }
+
     fn calc_collision(&mut self, rng: &mut dyn RngCore) {
         for animal in &mut self.world.animals {
             // Brute force implementation
@@ -136,20 +156,20 @@ impl Simulation {
                 }
             }
         }
+    }
 
-        /*
-        * - TODO: Pseudocode for cannibalism
-        *
-        for predator in &mut self.world.animals {
-            for prey in &mut self.world.animals {
-                let distance = na::distance(&predator.position, &prey.position);
-                if distance <= 0.01 && predator.hunger > prey.hunger{
-                    predator.hunger += 1;
-                    prey.hunger -= 1;
-                    prey.position = rng.r#gen();
-                }
+    /*
+    * - NOTE : Pseudocode for cannibalism
+    *
+    for predator in &mut self.world.animals {
+        for prey in &mut self.world.animals {
+            let distance = na::distance(&predator.position, &prey.position);
+            if distance <= 0.01 && predator.hunger > prey.hunger{
+                predator.hunger += 1;
+                prey.hunger -= 1;
+                prey.position = rng.r#gen();
             }
         }
-        */
     }
+    */
 }
