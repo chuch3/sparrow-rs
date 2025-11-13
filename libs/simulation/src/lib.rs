@@ -8,9 +8,12 @@ mod brain;
 mod config;
 mod eye;
 mod food;
+mod swarm;
 mod world;
 
-pub use self::{animal::*, animal_individual::*, brain::*, config::*, eye::*, food::*, world::*};
+pub use self::{
+    animal::*, animal_individual::*, brain::*, config::*, eye::*, food::*, swarm::*, world::*,
+};
 
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
@@ -19,6 +22,7 @@ pub struct Simulation {
     world: World,
     ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
     age: usize,
+    global_best_fitness: usize,
     config: SimulationConfig,
 }
 
@@ -36,6 +40,7 @@ impl Simulation {
             world,
             ga,
             age: 0,
+            global_best_fitness: usize::MIN,
             config,
         }
     }
@@ -117,18 +122,19 @@ impl Simulation {
         let mut updates: Vec<na::Vector2<f32>> = Vec::new();
         let coherence_weight = 0.5;
         let separation_weight = 0.55;
+        let alignment_weight = 0.1;
 
-        // Computing boidal movement
+        // Computing boid algorithm movement
         for animal in &self.world.animals {
             let coherence = self.world.calc_coherence(&animal);
             let separation = self.world.calc_separation(&animal);
+            let alignment = self.world.calc_alignment(&animal);
 
             // We dont' want the animal to teleport to the flock center, etc.
             // So we convert it to a direction vector for the animal to go towards it.
-            //let coherence_direction: na::Vector2<f32> = coherence - animal.position();
-            //let separation_direction: na::Vector2<f32> = separation - animal.position();
-
-            let delta = coherence.coords * coherence_weight + separation.coords * separation_weight;
+            let delta = coherence.coords * coherence_weight
+                + separation.coords * separation_weight
+                + alignment.coords * alignment_weight;
             updates.push(delta)
         }
 
@@ -157,19 +163,4 @@ impl Simulation {
             }
         }
     }
-
-    /*
-    * - NOTE : Pseudocode for cannibalism
-    *
-    for predator in &mut self.world.animals {
-        for prey in &mut self.world.animals {
-            let distance = na::distance(&predator.position, &prey.position);
-            if distance <= 0.01 && predator.hunger > prey.hunger{
-                predator.hunger += 1;
-                prey.hunger -= 1;
-                prey.position = rng.r#gen();
-            }
-        }
-    }
-    */
 }

@@ -1,18 +1,15 @@
 use crate::*;
 
 // TODO:
-// - [ ] NEAT Neuralevolution of Augmenting Topologies
-//      - [x] Neural network with its backpropagation replaced by genetic algorithm
-//      - [ ] More advanced genetic algorithm according to paper
-//      - [ ] Choosing activation and fitness functions
-//      - [ ] Dynamic topologies of neural network
-//      - [ ] Topology visualization
+// - [ ] Apply PSO force
+//      - Global fitness score, social parameter
+//      - Best fitness and position for current generation, cognitive parameter
+//      - Inertia, exploration then convergence (similar to simulated annealing)
 //
-// - [ ] Create alignment rule for boids
-// - [ ] Predator and prey goal setting with food
-// - [ ] More genetic algorithms
-// - [ ] Improve the neural network of the boids with `Burn` crate or MLP
-// - [ ] Better GUI and boid environment
+// - [ ] Fitness landspace
+//
+//
+//
 
 #[derive(Debug)]
 pub struct World {
@@ -30,7 +27,6 @@ impl World {
         let foods = (0..config.num_foods).map(|_| Food::random(rng)).collect();
         Self {
             animals,
-
             foods,
             config,
         }
@@ -48,8 +44,8 @@ impl World {
     // Reference pseudo-code : [link](http://www.kfish.org/boids/pseudocode.html)
 
     /// Rule 1, Coherence; Aims to fly towards the centre of mass in among surrounding boids.
-    /// To create a single or multiple murmuration of boids in following the same direction and
-    /// goal.
+    /// To create a single or multiple murmuration of boids in following the same direction
+    /// and goal.
     pub fn calc_coherence(&self, boid: &Animal) -> na::Point2<f32> {
         let animals: Vec<_> = self.animals().iter().filter(|a| boid != *a).collect();
         let perceived_center = if animals.is_empty() {
@@ -95,18 +91,18 @@ impl World {
     /// more smooth and consistent flocking.
     pub fn calc_alignment(&self, boid: &Animal) -> na::Point2<f32> {
         let animals: Vec<_> = self.animals().iter().filter(|a| boid != *a).collect();
-        let perceived_center = if animals.is_empty() {
+        let average_velocity = if animals.is_empty() {
             boid.position()
         } else {
             let sum = self
                 .animals()
                 .iter()
-                .map(|a| a.position().coords)
-                .fold(na::Vector2::zeros(), |acc, a| acc + a);
+                .map(|a| a.rotation() * na::Vector2::new(0.0, a.speed()))
+                .fold(na::Vector2::zeros(), |acc, velocity| acc + velocity);
 
             na::Point2::from(sum / (animals.len() - 1) as f32)
         };
-        na::Point2::from((perceived_center - boid.position()) / 100.0)
+        na::Point2::from(average_velocity)
     }
 }
 

@@ -11,7 +11,7 @@
 //!
 //! Code examples can be viewed in the test module supplied in the source code.
 //!
-//! Rerefence code by [link](https://pwy.io/posts/learning-to-fly-pt1)
+//! Reference code by [link](https://pwy.io/posts/learning-to-fly-pt1)
 //!
 
 use rand::{Rng, RngCore, seq::SliceRandom};
