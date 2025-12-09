@@ -37,7 +37,7 @@ npm run start
 
 Configuration file is located at `sparrow/web/src/config.toml` for any adjustments
 
-Simulation `[simulation]` 
+- Simulation `[simulation]`
 
 Controls general simulation behavior, evolution, and movement rules.
 
@@ -53,7 +53,7 @@ Controls general simulation behavior, evolution, and movement rules.
 | `max_generation`  | usize | 2000    | Maximum number of generations.             |
 
 
-World `[world]`:
+- World `[world]`
 
 Controls the environment of the simulation, including population and food.
 
@@ -64,7 +64,7 @@ Controls the environment of the simulation, including population and food.
 | `num_foods`   | usize | 60      | Number of food items available. |
 
 
-Animal `[animal]`:
+- Animal `[animal]`:
 
 Controls default behavior of each animal, like initial speed.
 
@@ -74,7 +74,7 @@ Controls default behavior of each animal, like initial speed.
 | `speed`   | f32  | 0.002   | Initial speed of an animal. |
 
 
-Eye `[eye]`:
+- Eye `[eye]`:
 
 Controls animal perception, including field of view and vision cells.
 
@@ -86,7 +86,7 @@ Controls animal perception, including field of view and vision cells.
 | `cells`     | usize | 10      | Number of discrete vision cells. |
 
 
-Example configuration:
+- Example configuration:
 
 ```toml
 [simulation]
