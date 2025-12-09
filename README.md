@@ -2,7 +2,7 @@
 
 ### Description 
 
-Simulation of a flock of social birds ("sparrows") that often flock together and forage in groups.  The behaviors of birds evolve over generations via a genetic algorithm, enabling flocking behavior and natural evolution.
+Simulation of a flock of social birds ("sparrows") that often forage in groups.  The behaviors of birds evolve over generations via a genetic algorithm and neural networks, enabling flocking behavior and natural evolution.
 
 ### Prerequisites
 - Cargo Rust : https://www.rust-lang.org/tools/install
@@ -25,7 +25,7 @@ cd libs/simulation-wasm # /home/user/sparrow/libs/simulation-wasm
 wasm-pack build
 ```
 
-Run the server:
+Run local server:
 
 ``` bash
 cd web # /home/user/sparrow/web
