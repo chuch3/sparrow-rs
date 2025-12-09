@@ -210,6 +210,8 @@ pub struct Statistics {
     pub min_fitness: f32,
     pub max_fitness: f32,
     pub avg_fitness: f32,
+    pub fitness_std: f32,
+    pub best_index: usize,
 }
 
 impl Statistics {
@@ -222,17 +224,30 @@ impl Statistics {
         let mut min_fitness = population[0].fitness();
         let mut max_fitness = min_fitness;
         let mut sum_fitness = 0.0;
+        let mut best_index: usize = 0;
 
-        for individual in population {
+        for (i, individual) in population.iter().enumerate() {
             let fitness = individual.fitness();
             min_fitness = min_fitness.min(fitness);
-            max_fitness = max_fitness.max(fitness);
+            if fitness > max_fitness {
+                best_index = i;
+                max_fitness = fitness;
+            }
             sum_fitness += fitness;
         }
+
+        let avg_fitness = sum_fitness / (population.len() as f32);
+
+        let fitness_std = population
+            .iter()
+            .map(|a| a.fitness())
+            .fold(0.0, |acc, a| acc + f32::powi(a - avg_fitness, 2));
 
         Self {
             min_fitness,
             max_fitness,
+            best_index,
+            fitness_std: (fitness_std / (population.len() as f32)).sqrt(),
             avg_fitness: sum_fitness / (population.len() as f32),
         }
     }

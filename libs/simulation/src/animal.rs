@@ -11,7 +11,7 @@ pub struct Animal {
 }
 
 impl PartialEq for Animal {
-    // All animal positions are unique and allows no collision.
+    // All animal positions are unique and allows no collision thanks to separation.
     fn eq(&self, other: &Self) -> bool {
         self.position == other.position
     }

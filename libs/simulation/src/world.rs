@@ -1,16 +1,5 @@
 use crate::*;
 
-// TODO:
-// - [ ] Apply PSO force
-//      - Global fitness score, social parameter
-//      - Best fitness and position for current generation, cognitive parameter
-//      - Inertia, exploration then convergence (similar to simulated annealing)
-//
-// - [ ] Fitness landspace
-//
-//
-//
-
 #[derive(Debug)]
 pub struct World {
     pub(crate) animals: Vec<Animal>,

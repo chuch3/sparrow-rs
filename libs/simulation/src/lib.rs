@@ -1,4 +1,4 @@
-use nalgebra as na;
+use nalgebra::{self as na};
 use rand::{Rng, RngCore};
 use std::f32::consts::FRAC_PI_4;
 
@@ -22,7 +22,11 @@ pub struct Simulation {
     world: World,
     ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
     age: usize,
-    global_best_fitness: usize,
+    global_best_fitness: f32,
+    global_best_position: na::Point2<f32>,
+    max_fitness: f32,
+    fitness_std: f32,
+    max_position: na::Point2<f32>,
     config: SimulationConfig,
 }
 
@@ -40,7 +44,11 @@ impl Simulation {
             world,
             ga,
             age: 0,
-            global_best_fitness: usize::MIN,
+            global_best_fitness: 0.0,
+            global_best_position: na::Point2::from([0.0, 0.0]),
+            max_fitness: 0.001, // Avoiding division by zero in inertia calculation
+            fitness_std: 0.001,
+            max_position: na::Point2::from([0.0, 0.0]),
             config,
         }
     }
@@ -83,6 +91,15 @@ impl Simulation {
         // Evolve the current population with genetic algorithms.
         let (new_population, stats) = self.ga.evolve(rng, &current_population);
 
+        self.max_position = self.world.animals[stats.best_index].position();
+        self.max_fitness = stats.max_fitness;
+        self.fitness_std = stats.fitness_std;
+
+        if self.max_fitness > self.global_best_fitness {
+            self.global_best_fitness = self.max_fitness;
+            self.global_best_position = self.max_position;
+        }
+
         // Create our evolved population into the ecosystem.
         self.world.animals = new_population
             .into_iter()
@@ -120,11 +137,12 @@ impl Simulation {
 
     fn calc_movement(&mut self) {
         let mut updates: Vec<na::Vector2<f32>> = Vec::new();
-        let coherence_weight = 0.5;
+        let coherence_weight = 0.1;
         let separation_weight = 0.55;
         let alignment_weight = 0.1;
 
-        // Computing boid algorithm movement
+        // Computing boid algorithm movement separately, following some reddit comment
+        // (should really reference it huh)
         for animal in &self.world.animals {
             let coherence = self.world.calc_coherence(&animal);
             let separation = self.world.calc_separation(&animal);
@@ -139,9 +157,16 @@ impl Simulation {
         }
 
         for (animal, delta) in self.world.animals.iter_mut().zip(updates) {
+            /*
+            let inertia = Swarm::calc_inertia(self.max_fitness, self.fitness_std);
+            let cognition = Swarm::calc_cognition(rng, self.max_position, animal.position());
+            let social = Swarm::calc_social(rng, self.global_best_position, animal.position());
+            */
+
             // Scales speed relative with y-axis as the boids points upward
-            // during no rotation.
+            // when there is no rotation.
             let mut velocity = delta + (animal.rotation * na::Vector2::new(0.0, animal.speed));
+
             if velocity.magnitude() > animal.speed() {
                 velocity = velocity.normalize() * animal.speed();
             }

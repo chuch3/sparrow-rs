@@ -102,10 +102,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lib-pso"
-version = "0.1.0"
-
-[[package]]
 name = "lib-simulation"
 version = "0.1.0"
 dependencies = [

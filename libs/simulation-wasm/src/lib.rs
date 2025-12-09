@@ -35,8 +35,8 @@ impl SimulationWasm {
     pub fn fast_forward(&mut self) -> String {
         let stats = self.sim.fast_forward(&mut self.rng, self.settings);
         format!(
-            "Fitness : min {:.4}, max {:.4}, average {:4}",
-            stats.min_fitness, stats.max_fitness, stats.avg_fitness
+            "Fitness : min {:.4}, max {:.4}, average {:4}, std {:4}",
+            stats.min_fitness, stats.max_fitness, stats.avg_fitness, stats.fitness_std
         )
     }
 }

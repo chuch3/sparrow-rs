@@ -1,17 +1,125 @@
-# sparrow
-
-## Respository is STILL IN PROGRESS for public use (i hope)
+# sparrow 🐦
 
 ### Description 
 
-Evolution environment with genetic algorithms written in Rust
+Simulation of a flock of social birds ("sparrows") that often flock together and forage in groups.  The behaviors of birds evolve over generations via a genetic algorithm, enabling flocking behavior and natural evolution.
 
-### Neural Network
+### Prerequisites
+- Cargo Rust : https://www.rust-lang.org/tools/install
+- `wasm-pack` installed via `cargo install wasm-pack`  
+- Node.js and npm installed: https://nodejs.org/
+
+### Build 
+
+Clone the repository:
+
+```bash
+git clone https://github.com/chuch3/sparrow.git
+cd sparrow # /home/user/sparrow
+```
+
+Build the package:
+
+```bash
+cd libs/simulation-wasm # /home/user/sparrow/libs/simulation-wasm
+wasm-pack build
+```
+
+Run the server:
+
+``` bash
+cd web # /home/user/sparrow/web
+npm install --save-dev webpack webpack-cli
+npm run start 
+```
+
+### Configuration
+
+Configuration file is located at `sparrow/web/src/config.toml` for any adjustments
+
+Simulation `[simulation]` 
+
+Controls general simulation behavior, evolution, and movement rules.
+
+
+| Parameter         | Type  | Default | Description                                |
+| ----------------- | ----- | ------- | ------------------------------------------ |
+| `speed_max`       | f32   | 0.003   | Maximum speed of animals.                  |
+| `speed_min`       | f32   | 0.0001  | Minimum speed of animals.                  |
+| `speed_accel`     | f32   | 0.05    | Acceleration per step.                     |
+| `rotation_accel`  | f32   | π/4     | Maximum rotational change per step.        |
+| `mutation_chance` | f32   | 0.01    | Chance of genetic mutation per generation. |
+| `mutation_weight` | f32   | 0.3     | Maximum effect of a mutation.              |
+| `max_generation`  | usize | 2000    | Maximum number of generations.             |
+
+
+World `[world]`:
+
+Controls the environment of the simulation, including population and food.
+
+
+| Parameter     | Type  | Default | Description                     |
+| ------------- | ----- | ------- | ------------------------------- |
+| `num_animals` | usize | 40      | Number of animals in the world. |
+| `num_foods`   | usize | 60      | Number of food items available. |
+
+
+Animal `[animal]`:
+
+Controls default behavior of each animal, like initial speed.
+
+
+| Parameter | Type | Default | Description                 |
+| --------- | ---- | ------- | --------------------------- |
+| `speed`   | f32  | 0.002   | Initial speed of an animal. |
+
+
+Eye `[eye]`:
+
+Controls animal perception, including field of view and vision cells.
+
+
+| Parameter   | Type  | Default | Description                      |
+| ----------- | ----- | ------- | -------------------------------- |
+| `fov_range` | f32   | 0.5     | How far the animal can see.      |
+| `fov_angle` | f32   | π/4     | Field of view angle.             |
+| `cells`     | usize | 10      | Number of discrete vision cells. |
+
+
+Example configuration:
+
+```toml
+[simulation]
+speed_max = 0.004
+speed_min = 0.001
+speed_accel = 0.06
+rotation_accel = 0.785398
+mutation_chance = 0.02
+mutation_weight = 0.35
+max_generation = 2500
+
+[world]
+num_animals = 50
+num_foods = 80
+
+[animal]
+speed = 0.003
+
+[eye]
+fov_range = 0.6
+fov_angle = 0.785398
+cells = 12
+```
+
+### Notes 
+
+#### Neural Network
 
 A simple feedforward neural network is used with genetic algorithms 
 replacing its weights optimization, compared to the general backpropagation.
 
-### Genetic Algorithm
+#### Genetic Algorithm
+
 
 Genetic algorithms (GA) is a heuristic optimization approach operating
 through nondeterministic, randomized search.
@@ -25,7 +133,7 @@ trying to evolve that are individually modeled with a brain / network.
 Each individual contains *genes* or collectively *genome* represented
 with neural network's weight tuned by GA. 
 
-#### Fitness 
+##### Fitness 
 
 We evaluate with **fitness function**, returning fitness scores representing 
 the degree of adaptation to its environment.
@@ -36,7 +144,7 @@ the degree of adaptation to its environment.
 agent is one such problem in GA. We can add more metrics like sunlight, 
 food, bloodthrist and water.
 
-#### Reproduction
+##### Reproduction
 
 **Reproduction** builds new offsprings with improved genes. 
 Two *new* individuals are randomly chosen, priotizing higher fitness. 
@@ -47,7 +155,7 @@ Genomes of both parents are combined by performing **selection**,
 * Crossover : Mixing two different genomes to get an approximate solution
 * Mutation : Discover new solutions from initial population
 
-#### Evolution
+##### Evolution
 
 As the neural network's search space are large, brute forcing combinations
 are not feasible. 
@@ -84,7 +192,7 @@ child chromosome.
 The final chromosomes are then used to create new individuals in our
 next update in the population.
 
-#### Workspace 
+##### Workspace 
 
 The frontend communicates with the backend through a **bridge** module 
 using WASM.
@@ -114,7 +222,7 @@ In summary,
 Resulting in a *Rust workspace (wasm-pack) + WebAssembly + Webpack + 
 JS Frontend* project.
 
-### Simulation
+#### Simulation
 
 After creating the simulation crate, a proxy crate is used by the frontend
 to interface with Rust. Each step in the simulation adds the rotation scaled by speed in each boid's position. As the boids points upwards during no 
@@ -124,9 +232,9 @@ Interface is shown using the `<canvas>` HTML element with JS as the frontend
 scripting. It manually draws the shape of boids on the generated position,
 with its rotation computed using basic trigonometry. 
 
-#### Collisions 
+##### Collisions 
 
-According to the general shape of our objects (triangle boids and circular
+#According to the general shape of our objects (triangle boids and circular
 foods), we apply hit-testing in a circle-triangle intersection.
 Hit-testing only computes the intersection of a point and object,
 while collision detection assess multiple objects.
@@ -144,7 +252,7 @@ $$
     \text{collision} = \text{distance}(a, b) \le r_a + r_b 
 $$
 
-#### Vision 
+##### Vision 
 
 Each boids has an array of vision cells where each number represents
 how close the food matching the eye cell. The eyes contains parameters:
@@ -152,7 +260,7 @@ how close the food matching the eye cell. The eyes contains parameters:
 * `fov_angle` : How wide the eyes can see relative to the rotation
 * `cells`: Number of photoreceptors for having more detailed vision
 
-#### Brain
+##### Brain
 
 For protoyping, we use the number of eye cells as the input layer of 
 our network. Outputs are represented as the shift of speed and rotation 
@@ -162,7 +270,7 @@ The population will start a new generation after a certain period of steps.
 Using genetic algorithms, we maximize fitness determined by number of food 
 consumed by each boid.
 
-#### Implementation with Genetic Algorithm 
+##### Implementation with Genetic Algorithm 
 
 The genetic algorithm evolves every brain by taking its weights from every layer
 in the our current population as chromosomes. The layers of network takes
@@ -187,25 +295,26 @@ way larger memory, borrowing is cheaper than cloning / deep clones.
 * If type has `Copy`, return by value.
 * If type has no `Copy`, return by reference.
 
-----------
+#### Todo
 
-### TODO
+- [ ] Apply PSO force
+     - [ ] Global best fitness score and positions, and current generation
+     - [ ] Social parameter
+     - [ ] Cognitive parameter
+     - [x] Inertia, exploration then convergence (similar to simulated annealing)
+- [ ] Fitness landspace and visualization
 
-- [ ] Visual the (sensors) eyes and brains for the boids
-- [ ] Configuration
-    - [ ] Error handling, cargo packages docs
-    - [ ] Traits for additional files to parse
+#### Bugs 
 
-- [ ] Better repo documentation and description
-- [ ] Refactor 
-- [ ] `--release` build for optimizations
-- [ ] Output every evolution instead of fast-forward.
-    - Statistics in step / evolve
+- [ ] Create a debugging point as in rust testcases, or web console output
+- [ ] Fix the social and cognition behavior as they are spassing out
+- [ ] Fix the food spawning for rastrigin
 
-#### Future
+#### Ideas 
 
-- [ ] Implement other senses like ears, nerves, mood, etc.
-- [ ] Entity Component System design pattern
-- [ ] Color mutation with chromosome and weights
-- [ ] Cannibalism having lower or higher effect on the fitness
-- [ ] Rayon data pararellization
+- [ ] Rayon Data Parallelism
+- [ ] Color mutation and reproduction
+- [ ] Prey-predator system or cannibalism
+- [ ] NEAT algorithm
+
+
