@@ -7,7 +7,6 @@ html {
     background-size: cover;
 }
 
-
 #title {
     color: #fff;
     margin-left: 50px;
@@ -36,13 +35,12 @@ html {
     margin-bottom: 15%;
     background: #1d1c21;
     color: #fff;
-
 }
 
 #viewport {
     margin: 5%;
     margin-top: 5%;
-    background: rgba(0, 0, 5, 0.5);
+    background: rgba(0, 0, 5, 0.1);
     width: 50%;
     height: 100%;
 }
