@@ -1,8 +1,11 @@
 # sparrow 🐦
 
-### Description 
+![](img/image.png) 
 
-Simulation of a flock of social birds ("sparrows") that often forage in groups. The behaviors of birds evolve over generations via genetic algorithm and neural networks, that enables flocking behavior and natural evolution.
+
+Simulation of a flock of social birds ("sparrows") that often forage in groups. 
+The behaviors of birds evolve over generations via genetic algorithm and neural networks, 
+that enables flocking behavior and natural evolution.
 
 ### Prerequisites
 - Cargo Rust : https://www.rust-lang.org/tools/install

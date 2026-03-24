@@ -170,6 +170,7 @@ impl Simulation {
             if velocity.magnitude() > animal.speed() {
                 velocity = velocity.normalize() * animal.speed();
             }
+
             animal.position += velocity;
             animal.position.x = na::wrap(animal.position.x, 0.0, 1.0);
             animal.position.y = na::wrap(animal.position.y, 0.0, 1.0);
